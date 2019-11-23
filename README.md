@@ -1,4 +1,4 @@
-### !!! plesae note: this repository is a WIP !!!
+### !!! please note: this repository is a WIP !!!
 
 
 ## Spectral Hyperresolution
