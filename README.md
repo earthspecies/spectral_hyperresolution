@@ -11,6 +11,11 @@ To quote the paper:
 
 The idea we would like to explore is the application of the novel linear reassignment technique to downstream tasks (audio classification, unsupervised machine translation, etc). The hope is that this richer representation can lead to improved performance.
 
+### Notable content
+
+1. [Introduction to linear reassignment](https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example.ipynb) with extensive discussion of parameter values.
+2. [Original Matlab implementation](https://github.com/earthspecies/spectral_hyperresolution/blob/master/reassignmentgw.m).
+
 "Sparse Time-Frequency Representations",Timothy J. Gardner and Marcelo O. Magnasco Proc. Natl. Acad. Sci. USA103.16 6094-6099 (2006)
 
 ### Useful resources
