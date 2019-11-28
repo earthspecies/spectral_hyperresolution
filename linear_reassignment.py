@@ -5,6 +5,7 @@ from numpy.fft import *
 from scipy.sparse import *
 from pylab import figure, cm
 from matplotlib.colors import LogNorm
+import warnings
 
 def create_reassigned_representation(x, q, tdeci, over, noct, minf, maxf):
     """Create sparse time-frequency representation
@@ -30,9 +31,12 @@ def create_reassigned_representation(x, q, tdeci, over, noct, minf, maxf):
         For a more indepth treatment of the paramters please see:
             https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example.ipynb
     """
+    assert x.ndim == 2, 'signal (x) has to be two dimensional'
+    assert x.shape[1] == 1, 'x.shape has to equal (N, 1)'
 
     lint = 0.5         # do not follow if reassignment takes you far
     MAXL = 2^27        # maximum length of vector to avoid paging
+    eps = 1e-20
 
     noct = np.array([[noct]])
     over = np.array([[over]])
@@ -67,7 +71,7 @@ def create_reassigned_representation(x, q, tdeci, over, noct, minf, maxf):
 
         xi = ifftn(gau.T * xf)
         eta = ifftn(gde.T * xf)
-        mp = eta / xi
+        mp = eta / (xi + eps)
         ener = abs(xi)**2
 
         tins = np.arange(1, N+1).reshape(-1, 1) + np.imag(mp)/(2*np.pi*sigma)
@@ -125,7 +129,12 @@ def create_reassigned_representation(x, q, tdeci, over, noct, minf, maxf):
     )
 
     mm = csc_matrix.max(histc)
-    histo[histc < np.sqrt(mm)] = 0
+
+    # this operation is very cheap comapared to other operations we are performing
+    # the warning adds no value nor there exists a good way of addressing it
+    with warnings.catch_warnings():
+       warnings.simplefilter("ignore")
+       histo[histc < np.sqrt(mm)] = 0
     histo.eliminate_zeros()
 
     return histo
@@ -152,5 +161,5 @@ def plot_spectogram(spectogram, sr, minf, maxf, tdeci):
     ax.set_ylabel('frequency')
 
     ax.set_xticks([0,  spectogram_dense.shape[1]//2, spectogram_dense.shape[1]])
-    ax.set_xticklabels([f'{t}s' for t in [0, round(spectogram_dense.shape[1]/2 * tdeci / sr, 1), round(spectogram_dense.shape[1] * tdeci / sr, 1)]])
+    ax.set_xticklabels([f'{t}s' for t in [0, round(spectogram_dense.shape[1]/2 * tdeci / sr, 2), round(spectogram_dense.shape[1] * tdeci / sr, 2)]])
     ax.set_xlabel('time')
