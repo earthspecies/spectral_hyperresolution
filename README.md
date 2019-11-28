@@ -18,6 +18,7 @@ The idea we would like to explore is the application of the novel linear reassig
 3. Two NBs ([Matlab](https://github.com/earthspecies/spectral_hyperresolution/blob/master/save_data_to_help_with_Python_implementation.ipynb), [Python](https://github.com/earthspecies/spectral_hyperresolution/blob/master/implement_linear_reassignment_in_Python.ipynb)) used while porting the algorithm.
 4. A Python module - [linear_reassignment.py](https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment.py) - containing the implementation of linear reassignment.
 5. A [notebook](https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_in_Python.ipynb) walking through the functionality imported from `linear_reassignment.py`.
+6. [Visualizing synthetic sounds](https://github.com/earthspecies/spectral_hyperresolution/blob/master/visualizing_synthetic_sounds.ipynb) - experimenting with linear reassignment in a controller environment.
 
 ### Useful resources
 
