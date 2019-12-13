@@ -43,11 +43,12 @@ def create_reassigned_representation_sparse(x, q, tdeci, over, noct, minf, maxf)
     minf = np.array([[minf]])
     maxf = np.array([[maxf]])
     N = np.array([[x.shape[0]]])
-    xf = fftn(x)
+    xf = fftn(x, axes=[0])
 
     HT = np.ceil(N/tdeci).astype(np.int)
     HF = np.ceil(-noct*np.log2(minf/maxf)+1).astype(np.int)
     f = (np.arange(0, N) / N)
+    f[f>0.5]=f[f>0.5]-1
 
     histo = csc_matrix((HT[0][0], HF[0][0]))
     histc = csc_matrix((HT[0][0], HF[0][0]))
@@ -68,8 +69,8 @@ def create_reassigned_representation_sparse(x, q, tdeci, over, noct, minf, maxf)
         gau = np.exp(-(f-f0)**2 / (2*sigma**2))
         gde = -1/sigma**1 * (f-f0) * gau
 
-        xi = ifftn(gau.T * xf)
-        eta = ifftn(gde.T * xf)
+        xi = ifftn(gau.T * xf, axes=[0])
+        eta = ifftn(gde.T * xf, axes=[0])
         mp = eta / (xi + eps)
         ener = abs(xi)**2
 
@@ -173,11 +174,12 @@ def create_reassigned_representation(x, q, tdeci, over, noct, minf, maxf):
     minf = np.array([[minf]])
     maxf = np.array([[maxf]])
     N = np.array([[x.shape[0]]])
-    xf = fftn(x)
+    xf = fftn(x, axes=[0])
 
     HT = np.ceil(N/tdeci).astype(np.int)
     HF = np.ceil(-noct*np.log2(minf/maxf)+1).astype(np.int)
     f = (np.arange(0, N) / N)
+    f[f>0.5]=f[f>0.5]-1
 
     minf = minf.astype(np.float32)
     maxf = maxf.astype(np.float32)
@@ -193,8 +195,8 @@ def create_reassigned_representation(x, q, tdeci, over, noct, minf, maxf):
         gau = np.exp(-(f-f0)**2 / (2*sigma**2))
         gde = -1/sigma**1 * (f-f0) * gau
 
-        xi = ifftn(gau.T * xf)
-        eta = ifftn(gde.T * xf)
+        xi = ifftn(gau.T * xf, axes=[0])
+        eta = ifftn(gde.T * xf, axes=[0])
         mp = eta / (xi + eps)
         ener = abs(xi)**2
 
@@ -202,6 +204,7 @@ def create_reassigned_representation(x, q, tdeci, over, noct, minf, maxf):
         fins = f0 - np.real(mp)*sigma;
 
         mask = (abs(mp)<lint) & (fins < maxf) & (fins>minf) & (tins>=1) & (tins<N)
+
         tins = tins[mask]
         fins = fins[mask]
         ener = ener[mask]
