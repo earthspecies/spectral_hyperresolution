@@ -47,7 +47,7 @@ def create_reassigned_representation_sparse(x, q, tdeci, over, noct, minf, maxf)
 
     HT = np.ceil(N/tdeci).astype(np.int)
     HF = np.ceil(-noct*np.log2(minf/maxf)+1).astype(np.int)
-    f = (np.arange(0, N) / N)
+    f = np.arange(0, N) / N
     f[f>0.5]=f[f>0.5]-1
 
     histo = csc_matrix((HT[0][0], HF[0][0]))
@@ -58,10 +58,10 @@ def create_reassigned_representation_sparse(x, q, tdeci, over, noct, minf, maxf)
     alle = np.zeros((1,0))
     allc = np.zeros((1,0))
 
-    minf = minf.astype(np.float32)
-    maxf = maxf.astype(np.float32)
-    over = over.astype(np.float32)
-    noct = noct.astype(np.float32)
+    minf = minf.astype(np.float64)
+    maxf = maxf.astype(np.float64)
+    over = over.astype(np.float64)
+    noct = noct.astype(np.float64)
 
     for log2f0 in np.arange(0, HF.astype(np.float32)*over):
         f0 = minf*2**(log2f0/over/noct)
@@ -178,12 +178,12 @@ def create_reassigned_representation(x, q, tdeci, over, noct, minf, maxf):
 
     HT = np.ceil(N/tdeci).astype(np.int)
     HF = np.ceil(-noct*np.log2(minf/maxf)+1).astype(np.int)
-    f = (np.arange(0, N) / N)
+    f = np.arange(0, N) / N
     f[f>0.5]=f[f>0.5]-1
 
-    minf = minf.astype(np.float32)
-    maxf = maxf.astype(np.float32)
-    over = over.astype(np.float32)
+    minf = minf.astype(np.float64)
+    maxf = maxf.astype(np.float64)
+    over = over.astype(np.float64)
     noct = noct.astype(np.float32)
 
     histo = np.zeros((HT[0][0], HF[0][0]))
