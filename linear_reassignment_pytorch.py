@@ -19,8 +19,7 @@ def complex_multiplication(a, b):
     real = ac - bd
     imag = ad + bc
 
-    per_channel_results = [torch.cat((real[None, i], imag[None, i]), dim=0).permute(1, 0).unsqueeze(0) for i in range(real.shape[0])]
-    return torch.cat(per_channel_results)
+    return torch.cat((real.unsqueeze(-1), imag.unsqueeze(-1)), dim=-1)
 
 def complex_conjugate(t):
     '''
