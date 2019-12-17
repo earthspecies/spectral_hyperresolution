@@ -10,14 +10,15 @@ import warnings
 def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf):
     """Create time-frequency representation
 
-    Intended to be a faithful Python implementation of Linear Reassignment as outlined in
+    Python implementation of Linear Reassignment as outlined in
         Sparse time-frequency representations by Timothy J. Gardner and Marcelo O. Magnasco.
-    Code in Matlab by authors' of the paper can be found here:
+    Code in MATLAB by authors of the paper can be found here:
         https://github.com/earthspecies/spectral_hyperresolution/blob/master/reassignmentgw.m
 
     Args:
-        x (numpy.ndarray of shape (N, 1)):
-            signal, an array of sampled amplitudes with values on the interval from -1 to 1
+        x (numpy.ndarray of shape (N, C)):
+            signal, an array of sampled amplitudes with values on the interval from -1 to 1,
+            where N is the number of samples and C number of channels
         q (float):
             the Q of a wavelet
             good values to try when working with tonal sounds are 2, 4, 8 and 1 and 0.5 for impulsive sounds
@@ -29,7 +30,7 @@ def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf):
         natural units: time in samples, frequency [0,1) where 1=sampling rate
 
         For a more indepth treatment of the parameters please see:
-            https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example.ipynb
+            https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example_in_Python.ipynb
     """
     assert x.ndim == 2, 'signal (x) has to be two dimensional'
 
@@ -89,16 +90,17 @@ def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf):
     return histo
 
 def high_resolution_spectogram_sparse(x, q, tdeci, over, noct, minf, maxf):
-    """Create sparse time-frequency representation
+    """Create time-frequency representation
 
-    Intended to be a faithful Python implementation of Linear Reassignment as outlined in
+    Python implementation of Linear Reassignment as outlined in
         Sparse time-frequency representations by Timothy J. Gardner and Marcelo O. Magnasco.
-    Code in Matlab by authors' of the paper can be found here:
+    Code in MATLAB by authors of the paper can be found here:
         https://github.com/earthspecies/spectral_hyperresolution/blob/master/reassignmentgw.m
 
     Args:
-        x (numpy.ndarray of shape (N, 1)):
-            signal, an array of sampled amplitudes with values on the interval from -1 to 1
+        x (numpy.ndarray of shape (N, C)):
+            signal, an array of sampled amplitudes with values on the interval from -1 to 1,
+            where N is the number of samples and C number of channels
         q (float):
             the Q of a wavelet
             good values to try when working with tonal sounds are 2, 4, 8 and 1 and 0.5 for impulsive sounds
@@ -110,7 +112,7 @@ def high_resolution_spectogram_sparse(x, q, tdeci, over, noct, minf, maxf):
         natural units: time in samples, frequency [0,1) where 1=sampling rate
 
         For a more indepth treatment of the parameters please see:
-            https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example.ipynb
+            https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example_in_Python.ipynb
     """
     assert x.ndim == 2, 'signal (x) has to be two dimensional'
 

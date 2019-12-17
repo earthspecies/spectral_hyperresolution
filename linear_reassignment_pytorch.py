@@ -44,6 +44,30 @@ def abs_of_complex_number(t):
     return torch.sqrt(t_squared[:, :, 0] + t_squared[:, :, 1])
 
 def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf, device='cpu'):
+    """Create time-frequency representation
+
+    Pytorch implementation of Linear Reassignment as outlined in
+        Sparse time-frequency representations by Timothy J. Gardner and Marcelo O. Magnasco.
+    Code in Matlab by authors' of the paper can be found here:
+        https://github.com/earthspecies/spectral_hyperresolution/blob/master/reassignmentgw.m
+
+    Args:
+        x (a tensor or numpy.ndarray of shape (N, C)):
+            signal, an array of sampled amplitudes with values on the interval from -1 to 1,
+            where N is the number of samples and C number of channels
+        q (float):
+            the Q of a wavelet
+            good values to try when working with tonal sounds are 2, 4, 8 and 1 and 0.5 for impulsive sounds
+        tdeci (int): temporal stride in samples, bigger means narrower picture
+        over (int):  number of frequencies tried per vertical pixel
+        minf (float):  the smallest frequency to visualize
+        maxf (float):  the largest frequency to visualize
+
+        natural units: time in samples, frequency [0,1) where 1=sampling rate
+
+        For a more indepth treatment of the parameters please see:
+            https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example_in_Python.ipynb
+    """
 
     assert x.ndim == 2, 'signal (x) has to be two dimensional'
     eps = 1e-20
@@ -111,6 +135,30 @@ def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf, device='cpu'
     return histo
 
 def high_resolution_spectogram_float32(x, q, tdeci, over, noct, minf, maxf, device='cpu'):
+    """Create time-frequency representation
+
+    Pytorch implementation of Linear Reassignment as outlined in
+        Sparse time-frequency representations by Timothy J. Gardner and Marcelo O. Magnasco.
+    Code in Matlab by authors' of the paper can be found here:
+        https://github.com/earthspecies/spectral_hyperresolution/blob/master/reassignmentgw.m
+
+    Args:
+        x (a tensor or numpy.ndarray of shape (N, C)):
+            signal, an array of sampled amplitudes with values on the interval from -1 to 1,
+            where N is the number of samples and C number of channels
+        q (float):
+            the Q of a wavelet
+            good values to try when working with tonal sounds are 2, 4, 8 and 1 and 0.5 for impulsive sounds
+        tdeci (int): temporal stride in samples, bigger means narrower picture
+        over (int):  number of frequencies tried per vertical pixel
+        minf (float):  the smallest frequency to visualize
+        maxf (float):  the largest frequency to visualize
+
+        natural units: time in samples, frequency [0,1) where 1=sampling rate
+
+        For a more indepth treatment of the parameters please see:
+            https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example_in_Python.ipynb
+    """
 
     assert x.ndim == 2, 'signal (x) has to be two dimensional'
     eps = 1e-20
