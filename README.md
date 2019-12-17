@@ -1,6 +1,3 @@
-### !!! please note: this repository is a WIP !!!
-
-
 ## Spectral Hyperresolution
 
 This repository brings [Sparse time-frequency representations](https://doi.org/10.1073/pnas.0601707103) by Timothy J. Gardner and Marcelo O. Magnasco to the Python world.
