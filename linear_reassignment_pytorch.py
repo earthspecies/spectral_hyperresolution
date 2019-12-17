@@ -19,9 +19,8 @@ def complex_multiplication(a, b):
     real = ac - bd
     imag = ad + bc
 
-    complex_a = torch.cat((real[None, 0], imag[None, 0]), dim=0).permute(1, 0).unsqueeze(0)
-    complex_b = torch.cat((real[None, 1], imag[None, 1]), dim=0).permute(1, 0).unsqueeze(0)
-    return torch.cat((complex_a, complex_b))
+    per_channel_results = [torch.cat((real[None, i], imag[None, i]), dim=0).permute(1, 0).unsqueeze(0) for i in range(real.shape[0])]
+    return torch.cat(per_channel_results)
 
 def complex_conjugate(t):
     '''
@@ -44,7 +43,7 @@ def abs_of_complex_number(t):
     t_squared = t**2
     return torch.sqrt(t_squared[:, :, 0] + t_squared[:, :, 1])
 
-def high_resolution_spectogram_pytorch(x, q, tdeci, over, noct, minf, maxf, device='cpu'):
+def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf, device='cpu'):
 
     assert x.ndim == 2, 'signal (x) has to be two dimensional'
     eps = 1e-20
@@ -111,7 +110,7 @@ def high_resolution_spectogram_pytorch(x, q, tdeci, over, noct, minf, maxf, devi
     histo[histc < torch.sqrt(mm)] = 0
     return histo
 
-def high_resolution_spectogram_pytorch_float32(x, q, tdeci, over, noct, minf, maxf, device='cpu'):
+def high_resolution_spectogram_float32(x, q, tdeci, over, noct, minf, maxf, device='cpu'):
 
     assert x.ndim == 2, 'signal (x) has to be two dimensional'
     eps = 1e-20
@@ -124,8 +123,7 @@ def high_resolution_spectogram_pytorch_float32(x, q, tdeci, over, noct, minf, ma
         tdeci = torch.FloatTensor([[tdeci]])
         minf = torch.FloatTensor([[minf]])
         maxf = torch.FloatTensor([[maxf]])
-
-        N = torch.DoubleTensor([[x.shape[0]]])
+        N = torch.FloatTensor([[x.shape[0]]])
     elif device == 'cuda':
         x = torch.cuda.FloatTensor(x)
         noct = torch.cuda.FloatTensor([[noct]])
