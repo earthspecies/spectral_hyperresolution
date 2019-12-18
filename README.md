@@ -1,4 +1,4 @@
-## Spectral Hyperresolution
+# Spectral Hyperresolution
 
 This repository brings [Sparse time-frequency representations](https://doi.org/10.1073/pnas.0601707103) by Timothy J. Gardner and Marcelo O. Magnasco to the Python world.
 
@@ -9,6 +9,10 @@ To quote the paper:
 The idea we would like to explore is the application of the novel linear reassignment technique to downstream tasks (audio classification, unsupervised machine translation, etc). The hope is that this richer representation can lead to improved performance.
 
 ![Example of Hyperresolution Spectrogram](https://raw.githubusercontent.com/earthspecies/spectral_hyperresolution/master/data/dolphin_hyper_single_channel.png)
+
+### Installation
+
+To install from github run `pip install git+git://github.com/earthspecies/spectral_hyperresolution.git`
 
 ### Table of Contents
 
