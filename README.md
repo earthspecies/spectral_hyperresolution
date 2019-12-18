@@ -18,7 +18,7 @@ To install from github run `pip install git+git://github.com/earthspecies/spectr
 
 1. [Introduction to linear reassignment in Python](https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example_in_Python.ipynb) with extensive discussion of parameter values.
 2. Implementation of linear reassignment in [Pytorch](https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_pytorch.py) and [Numpy](https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment.py)
-3. [Verification of correctness of implementations as well as comparison of their execution times](https://github.com/earthspecies/spectral_hyperresolution/blob/master/verify_correctness_and_benchmark.ipynb) using [data exported from MATLAB](https://github.com/earthspecies/spectral_hyperresolution/blob/master/save_matlab_data_for_verifying_correctness.ipynb).
+3. [Verification of correctness of implementations as well as comparison of their execution times](https://github.com/earthspecies/spectral_hyperresolution/blob/master/verify_correctness_and_benchmark.ipynb) using [data exported from MATLAB](https://github.com/earthspecies/spectral_hyperresolution/blob/master/save_MATLAB_data_for_verifying_correctness.ipynb).
 4. [Introduction to linear reassignment in MATLAB](https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example_in_MATLAB.ipynb) with extensive discussion of parameter values.
 5. [Original MATLAB implementation](https://github.com/earthspecies/spectral_hyperresolution/blob/master/reassignmentgw.m).
 
