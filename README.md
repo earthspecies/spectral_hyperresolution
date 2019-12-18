@@ -8,7 +8,7 @@ To quote the paper:
 
 The idea we would like to explore is the application of the novel linear reassignment technique to downstream tasks (audio classification, unsupervised machine translation, etc). The hope is that this richer representation can lead to improved performance.
 
-![Example of Hyperresolution Spectrogram](https://raw.githubusercontent.com/earthspecies/spectral_hyperresolution/master/data/dolphin_hyper_single_channel.png)
+![Example of Hyperresolution Spectrogram](https://raw.githubusercontent.com/earthspecies/spectral_hyperresolution/master/data/dolphin_hyper.png)
 
 ### Installation
 
