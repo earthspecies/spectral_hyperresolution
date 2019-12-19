@@ -213,7 +213,7 @@ def high_resolution_spectogram_sparse(x, q, tdeci, over, noct, minf, maxf):
 
     mm = csc_matrix.max(histc)
 
-    # this operation is very cheap comapared to other operations we are performing
+    # this operation is very cheap compared to other operations we are performing
     # the warning adds no value nor there exists a good way of addressing it
     with warnings.catch_warnings():
        warnings.simplefilter("ignore")
