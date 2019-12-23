@@ -7,7 +7,7 @@ from pylab import figure, cm
 from matplotlib.colors import LogNorm
 import warnings
 
-def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf):
+def high_resolution_spectrogram(x, q, tdeci, over, noct, minf, maxf):
     """Create time-frequency representation
 
     Python implementation of Linear Reassignment as outlined in
@@ -89,7 +89,7 @@ def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf):
 
     return histo
 
-def high_resolution_spectogram_sparse(x, q, tdeci, over, noct, minf, maxf):
+def high_resolution_spectrogram_sparse(x, q, tdeci, over, noct, minf, maxf):
     """Create time-frequency representation
 
     Python implementation of Linear Reassignment as outlined in

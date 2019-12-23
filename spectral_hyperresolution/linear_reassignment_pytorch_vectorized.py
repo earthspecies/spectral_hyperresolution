@@ -49,7 +49,7 @@ def abs_of_complex_numbers(t):
     t_squared = t**2
     return torch.sqrt(t_squared[:, :, :, 0] + t_squared[:, :, :, 1])
 
-# def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf, device='cpu'):
+# def high_resolution_spectrogram(x, q, tdeci, over, noct, minf, maxf, device='cpu'):
     # """Create time-frequency representation
 
     # Pytorch implementation of Linear Reassignment as outlined in
@@ -142,7 +142,7 @@ def abs_of_complex_numbers(t):
     # histo[histc < torch.sqrt(mm)] = 0
     # return histo
 
-def high_resolution_spectogram(x, q, tdeci, over, noct, minf, maxf, \
+def high_resolution_spectrogram(x, q, tdeci, over, noct, minf, maxf, \
         device=torch.device('cpu'), dtype=torch.float32, chunks=1):
     """Create time-frequency representation
 
