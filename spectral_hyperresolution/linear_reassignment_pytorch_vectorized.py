@@ -49,99 +49,6 @@ def abs_of_complex_numbers(t):
     t_squared = t**2
     return torch.sqrt(t_squared[:, :, :, 0] + t_squared[:, :, :, 1])
 
-# def high_resolution_spectrogram(x, q, tdeci, over, noct, minf, maxf, device='cpu'):
-    # """Create time-frequency representation
-
-    # Pytorch implementation of Linear Reassignment as outlined in
-        # Sparse time-frequency representations by Timothy J. Gardner and Marcelo O. Magnasco.
-    # Code in Matlab by authors' of the paper can be found here:
-        # https://github.com/earthspecies/spectral_hyperresolution/blob/master/reassignmentgw.m
-
-    # Args:
-        # x (a tensor or numpy.ndarray of shape (N, C)):
-            # signal, an array of sampled amplitudes with values on the interval from -1 to 1,
-            # where N is the number of samples and C number of channels
-        # q (float):
-            # the Q of a wavelet
-            # good values to try when working with tonal sounds are 2, 4, 8 and 1 and 0.5 for impulsive sounds
-        # tdeci (int): temporal stride in samples, bigger means narrower picture
-        # over (int):  number of frequencies tried per vertical pixel
-        # minf (float):  the smallest frequency to visualize
-        # maxf (float):  the largest frequency to visualize
-
-        # natural units: time in samples, frequency [0,1) where 1=sampling rate
-
-        # For a more indepth treatment of the parameters please see:
-            # https://github.com/earthspecies/spectral_hyperresolution/blob/master/linear_reassignment_example_in_Python.ipynb
-    # """
-
-    # assert x.ndim == 2, 'signal (x) has to be two dimensional'
-    # eps = 1e-20
-    # lint = 0.5
-
-    # if device == 'cpu':
-        # x = torch.DoubleTensor(x)
-        # noct = torch.DoubleTensor([[noct]])
-        # over = torch.DoubleTensor([[over]])
-        # tdeci = torch.DoubleTensor([[tdeci]])
-        # minf = torch.DoubleTensor([[minf]])
-        # maxf = torch.DoubleTensor([[maxf]])
-
-        # N = torch.DoubleTensor([[x.shape[0]]])
-    # elif device == 'cuda':
-        # x = torch.cuda.DoubleTensor(x)
-        # noct = torch.cuda.DoubleTensor([[noct]])
-        # over = torch.cuda.DoubleTensor([[over]])
-        # tdeci = torch.cuda.DoubleTensor([[tdeci]])
-        # minf = torch.cuda.DoubleTensor([[minf]])
-        # maxf = torch.cuda.DoubleTensor([[maxf]])
-        # N = torch.cuda.DoubleTensor([[x.shape[0]]])
-
-    # xf = torch.rfft(x.permute(1,0), 1, onesided=False)
-
-    # HT = torch.ceil(N/tdeci).long()
-    # HF = torch.ceil(-noct*torch.log2(minf/maxf)+1).long()
-
-    # f = (torch.arange(0, N[0][0], device=device) / N)
-    # f[f>0.5]=f[f>0.5]-1
-
-    # histo = torch.zeros(HT[0][0], HF[0][0], device=device, dtype=torch.float64)
-    # histc = torch.zeros(HT[0][0], HF[0][0], device=device, dtype=torch.float64)
-
-    # log2f0s = torch.arange(0, HF[0][0].item()*over.item(), device=device)
-    # xfs = xf.unsqueeze(1).expand(xf.shape[0], log2f0s.shape[0], xf.shape[1], xf.shape[2])
-    # f0s = minf*2**(log2f0s/over/noct).unsqueeze(-1).expand(1, log2f0s.shape[0], f.shape[1])
-    # sigmas = f0s/(2*math.pi*q)
-    # fs = f[:, None].expand(1, log2f0s.shape[0], f.shape[1])
-    # gaus = torch.exp(-(fs-f0s)**2 / (2*sigmas**2))
-    # gdes = -1/sigmas**1 * (fs-f0s) * gaus
-
-    # xis = torch.ifft(gaus.unsqueeze(-1) * xfs, 1)
-    # etas = torch.ifft(gdes.unsqueeze(-1) * xfs, 1)
-    # mps = complex_divisions(etas, xis + eps)
-    # eners = abs_of_complex_numbers(xis)**2
-
-    # tins = torch.arange(1, (N+1).item(), device=device) +  (mps[:, :, :, 1]/(2*math.pi*sigmas))
-    # fins = f0s - mps[:, :, :, 0]*sigmas
-    # mask = (abs_of_complex_numbers(mps)<lint) & (fins < maxf) & (fins>minf) & (tins>=1) & (tins<N)
-    # tins = tins[mask]
-    # fins = fins[mask]
-    # eners = eners[mask]
-
-    # itins = torch.round(tins/tdeci+0.5)
-    # ifins = torch.round(-noct*torch.log2(fins/maxf)+1)
-    # row_idxs = itins[0].long()-1
-
-    # col_idxs = ifins[0].long()-1
-    # idx_tensor = row_idxs * histo.shape[1] + col_idxs
-
-    # histo.put_(idx_tensor, eners, accumulate=True)
-    # histc.put_(idx_tensor, (0*itins[0]+1), accumulate=True)
-
-    # mm = histc.max()
-    # histo[histc < torch.sqrt(mm)] = 0
-    # return histo
-
 def high_resolution_spectrogram(x, q, tdeci, over, noct, minf, maxf, \
         device=torch.device('cpu'), dtype=torch.float32, chunks=1):
     """Create time-frequency representation
@@ -187,7 +94,8 @@ def high_resolution_spectrogram(x, q, tdeci, over, noct, minf, maxf, \
     maxf = torch.tensor([[maxf]], dtype=dtype, device=device)
     N = torch.tensor([[x.shape[0]]], dtype=dtype, device=device)
 
-    xf = torch.rfft(x.permute(1,0), 1, onesided=False)
+    xf = torch.fft.fft(x.permute(1,0))
+    xf = torch.view_as_real(xf)
 
     HT = torch.ceil(N/tdeci).long()
     HF = torch.ceil(-noct*torch.log2(minf/maxf)+1).long()
@@ -207,8 +115,12 @@ def high_resolution_spectrogram(x, q, tdeci, over, noct, minf, maxf, \
         gaus = torch.exp(-(fs-f0s)**2 / (2*sigmas**2))
         gdes = -1/sigmas**1 * (fs-f0s) * gaus
 
-        xis = torch.ifft(gaus.unsqueeze(-1) * xfs, 1)
-        etas = torch.ifft(gdes.unsqueeze(-1) * xfs, 1)
+        wind = torch.view_as_complex(gaus.unsqueeze(-1) * xfs)
+        eta_wind = torch.view_as_complex(gdes.unsqueeze(-1) * xfs)
+        xis = torch.fft.ifft(wind)
+        etas = torch.fft.ifft(eta_wind)
+        xis = torch.view_as_real(xis)
+        etas = torch.view_as_real(etas)
         mps = complex_divisions(etas, xis + eps)
         eners = abs_of_complex_numbers(xis)**2
 
