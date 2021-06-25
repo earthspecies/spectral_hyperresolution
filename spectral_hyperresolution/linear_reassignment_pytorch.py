@@ -87,8 +87,9 @@ def high_resolution_spectrogram(x, q, tdeci, over, noct, minf, maxf, \
     maxf = torch.tensor([[maxf]], dtype=dtype, device=device)
     N = torch.tensor([[x.shape[0]]], dtype=dtype, device=device)
 
-    xf = torch.rfft(x.permute(1,0), 1, onesided=False)
-
+    xf = torch.fft.fft(x.permute(1,0))
+    #interpret result from fft as [real, imag]
+    xf = torch.view_as_real(xf)
     HT = torch.ceil(N/tdeci).long()
     HF = torch.ceil(-noct*torch.log2(minf/maxf)+1).long()
 
@@ -104,8 +105,11 @@ def high_resolution_spectrogram(x, q, tdeci, over, noct, minf, maxf, \
         gau = torch.exp(-(f-f0)**2 / (2*sigma**2))
         gde = -1/sigma**1 * (f-f0) * gau
 
-        xi = torch.ifft(gau.T * xf, 1)
-        eta = torch.ifft(gde.T * xf, 1)
+        xi = torch.fft.ifft(torch.view_as_complex(gau.T * xf))
+        eta = torch.fft.ifft(torch.view_as_complex(gde.T * xf))
+        xi = torch.view_as_real(xi)
+        eta = torch.view_as_real(eta)
+        
         mp = complex_division(eta, xi + eps)
         ener = abs_of_complex_number(xi)**2
 
